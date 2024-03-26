@@ -480,27 +480,6 @@ for col in numerical_attributes_list:
     counts_rela_upda = data_rela_upda.value_counts()
     print("替换缺失值前频数统计\n", counts, "\n")
     print("替换缺失值后频数统计\n", counts_rela_upda, "\n")
-
-# print("四、通过数据对象之间的相似性来填补缺失值")
-# from sklearn.ensemble import RandomForestClassifier
-# from sklearn.model_selection import train_test_split
-# from sklearn.metrics import accuracy_score
-# X = df.drop(['language'], axis=1)
-# X_train = X[df['language'].notnull()]
-# y_train = data[df['language'].notnull()]  
-# X_test = X[df['language'].isnull()]
-# y_test = data[df['language'].isnull()]
-# rf_classifier = RandomForestClassifier(n_estimators=100, random_state=42)
-# rf_classifier.fit(X_train, y_train)
-# data_sim_upda = data
-# data_sim_upda[data.isnull()] = rf_classifier.predict(X_test)
-# print("替换缺失值前的数据集⼤⼩: ",data.shape)
-# print("替换缺失值后的数据集⼤⼩: ", data_sim_upda.shape)
-# print("将缺失部分剔除后缺失值统计：", data_sim_upda.isnull().sum(), "个")
-# counts = data.value_counts()
-# counts_sim_upda = data_sim_upda.value_counts()
-# print("替换缺失值前频数统计\n", counts, "\n")
-# print("替换缺失值后频数统计\n", counts_sim_upda, "\n")
 ```
 
     一、将缺失部分剔除
@@ -1229,7 +1208,7 @@ for attribute in nominal_attribute_list:
     print(count(attribute, df), "\n")
 ```
 
-    C:\Users\LiuSiyuan\AppData\Local\Temp\ipykernel_19452\3945464940.py:6: DtypeWarning: Columns (13,14) have mixed types. Specify dtype option on import or set low_memory=False.
+    C:\Users\LiuSiyuan\AppData\Local\Temp\ipykernel_17588\3945464940.py:6: DtypeWarning: Columns (13,14) have mixed types. Specify dtype option on import or set low_memory=False.
       df = pd.read_csv(filepath, header=0)
 
 
@@ -1970,15 +1949,15 @@ for attribute in numerical_attributes_list:
 
 ​    
 
-下面分别使用四种方式处理缺失值：
+下面分别使用三种方式处理缺失值：
 
 将缺失部分剔除
-
-用最高频率值来填补缺失值
 
 通过属性的相关关系来填补缺失值
 
 通过数据对象之间的相似性来填补缺失值
+
+由于缺失值为数值型数据，因此无法用最高频率值来填补缺失值
 
 
 ```python
@@ -1993,17 +1972,7 @@ for attribute in numerical_attributes_list:
     print("剔除缺失值后缺失值统计：", data_dele.isnull().sum())
     print()
 
-    print("二、用最高频率值来填补缺失值")
-    data_max_upda = data.fillna(max(data))
-    print("替换缺失值前的数据集⼤⼩: ",data.shape)
-    print("替换缺失值后的数据集⼤⼩: ", data_max_upda.shape)
-    print("将缺失部分剔除后缺失值统计：", data_max_upda.isnull().sum(), "个")
-    counts = data.value_counts()
-    counts_max_upda = data_max_upda.value_counts()
-    print("替换缺失值前频数统计\n", counts, "\n")
-    print("替换缺失值后频数统计\n", counts_max_upda, "\n")
-
-    print("三、通过属性的相关关系来填补缺失值")
+    print("二、通过属性的相关关系来填补缺失值")
     for col in numerical_attributes_list:
         print("相关属性：", col)
         mean = df[col].mean()
@@ -2016,7 +1985,7 @@ for attribute in numerical_attributes_list:
         print("替换缺失值前频数统计\n", counts, "\n")
         print("替换缺失值后频数统计\n", counts_rela_upda, "\n")
 
-print("四、通过数据对象之间的相似性来填补缺失值")
+print("三、通过数据对象之间的相似性来填补缺失值")
 df_num = df[numerical_attributes_list].astype('float64')
 knn_imputer = KNNImputer(n_neighbors=2)
 filled_values = knn_imputer.fit_transform(df_num)
@@ -2032,41 +2001,7 @@ print(df_filled)
     剔除缺失值后的数据集⼤⼩:  (144629,)
     剔除缺失值后缺失值统计： 0
     
-    二、用最高频率值来填补缺失值
-    替换缺失值前的数据集⼤⼩:  (214462,)
-    替换缺失值后的数据集⼤⼩:  (214462,)
-    将缺失部分剔除后缺失值统计： 0 个
-    替换缺失值前频数统计
-     Data_Value
-    6.0     473
-    6.3     467
-    6.1     459
-    5.8     458
-    5.2     456
-           ... 
-    99.7      2
-    0.5       1
-    0.6       1
-    0.3       1
-    0.2       1
-    Name: count, Length: 999, dtype: int64 
-    
-    替换缺失值后频数统计
-     Data_Value
-    100.0    69852
-    6.0        473
-    6.3        467
-    6.1        459
-    5.8        458
-             ...  
-    99.7         2
-    0.5          1
-    0.6          1
-    0.3          1
-    0.2          1
-    Name: count, Length: 999, dtype: int64 
-    
-    三、通过属性的相关关系来填补缺失值
+    二、通过属性的相关关系来填补缺失值
     相关属性： Data_Value
     替换缺失值前的数据集⼤⼩:  (214462,)
     替换缺失值后的数据集⼤⼩:  (214462,)
@@ -2208,41 +2143,7 @@ print(df_filled)
     剔除缺失值后的数据集⼤⼩:  (144629,)
     剔除缺失值后缺失值统计： 0
     
-    二、用最高频率值来填补缺失值
-    替换缺失值前的数据集⼤⼩:  (214462,)
-    替换缺失值后的数据集⼤⼩:  (214462,)
-    将缺失部分剔除后缺失值统计： 0 个
-    替换缺失值前频数统计
-     Data_Value_Alt
-    6.0     473
-    6.3     467
-    6.1     459
-    5.8     458
-    5.2     456
-           ... 
-    99.7      2
-    0.5       1
-    0.6       1
-    0.3       1
-    0.2       1
-    Name: count, Length: 999, dtype: int64 
-    
-    替换缺失值后频数统计
-     Data_Value_Alt
-    100.0    69852
-    6.0        473
-    6.3        467
-    6.1        459
-    5.8        458
-             ...  
-    99.7         2
-    0.5          1
-    0.6          1
-    0.3          1
-    0.2          1
-    Name: count, Length: 999, dtype: int64 
-    
-    三、通过属性的相关关系来填补缺失值
+    二、通过属性的相关关系来填补缺失值
     相关属性： Data_Value
     替换缺失值前的数据集⼤⼩:  (214462,)
     替换缺失值后的数据集⼤⼩:  (214462,)
@@ -2384,41 +2285,7 @@ print(df_filled)
     剔除缺失值后的数据集⼤⼩:  (144453,)
     剔除缺失值后缺失值统计： 0
     
-    二、用最高频率值来填补缺失值
-    替换缺失值前的数据集⼤⼩:  (214462,)
-    替换缺失值后的数据集⼤⼩:  (214462,)
-    将缺失部分剔除后缺失值统计： 0 个
-    替换缺失值前频数统计
-     Low_Confidence_Limit
-    4.8     601
-    5.4     593
-    4.7     588
-    4.9     574
-    5.6     561
-           ... 
-    99.5      1
-    99.6      1
-    98.4      1
-    97.8      1
-    99.4      1
-    Name: count, Length: 991, dtype: int64 
-    
-    替换缺失值后频数统计
-     Low_Confidence_Limit
-    99.6    70010
-    4.8       601
-    5.4       593
-    4.7       588
-    4.9       574
-            ...  
-    99.5        1
-    98.4        1
-    98.7        1
-    99.3        1
-    99.4        1
-    Name: count, Length: 991, dtype: int64 
-    
-    三、通过属性的相关关系来填补缺失值
+    二、通过属性的相关关系来填补缺失值
     相关属性： Data_Value
     替换缺失值前的数据集⼤⼩:  (214462,)
     替换缺失值后的数据集⼤⼩:  (214462,)
@@ -2560,41 +2427,7 @@ print(df_filled)
     剔除缺失值后的数据集⼤⼩:  (144453,)
     剔除缺失值后缺失值统计： 0
     
-    二、用最高频率值来填补缺失值
-    替换缺失值前的数据集⼤⼩:  (214462,)
-    替换缺失值后的数据集⼤⼩:  (214462,)
-    将缺失部分剔除后缺失值统计： 0 个
-    替换缺失值前频数统计
-     High_Confidence_Limit
-    6.5    350
-    5.8    349
-    6.1    340
-    5.9    339
-    7.5    338
-          ... 
-    2.8      2
-    1.4      2
-    1.7      1
-    1.5      1
-    1.6      1
-    Name: count, Length: 986, dtype: int64 
-    
-    替换缺失值后频数统计
-     High_Confidence_Limit
-    100.0    70016
-    6.5        350
-    5.8        349
-    6.1        340
-    5.9        339
-             ...  
-    2.8          2
-    1.4          2
-    1.7          1
-    1.5          1
-    1.6          1
-    Name: count, Length: 986, dtype: int64 
-    
-    三、通过属性的相关关系来填补缺失值
+    二、通过属性的相关关系来填补缺失值
     相关属性： Data_Value
     替换缺失值前的数据集⼤⼩:  (214462,)
     替换缺失值后的数据集⼤⼩:  (214462,)
@@ -2731,59 +2564,7 @@ print(df_filled)
     1.600000         1
     Name: count, Length: 987, dtype: int64 
     
-    四、通过数据对象之间的相似性来填补缺失值
-
-
-
-    ---------------------------------------------------------------------------
-    
-    ValueError                                Traceback (most recent call last)
-    
-    Cell In[12], line 39
-         37 knn_imputer = KNNImputer(n_neighbors=2)
-         38 filled_values = knn_imputer.fit_transform(df_num)
-    ---> 39 df_filled = pd.DataFrame(filled_values, columns=df.columns)  
-         41     # 打印填补后的DataFrame  
-         42 print(df_filled)
-
-
-    File D:\Software\Python3.9\lib\site-packages\pandas\core\frame.py:758, in DataFrame.__init__(self, data, index, columns, dtype, copy)
-        747         mgr = dict_to_mgr(
-        748             # error: Item "ndarray" of "Union[ndarray, Series, Index]" has no
-        749             # attribute "name"
-       (...)
-        755             copy=_copy,
-        756         )
-        757     else:
-    --> 758         mgr = ndarray_to_mgr(
-        759             data,
-        760             index,
-        761             columns,
-        762             dtype=dtype,
-        763             copy=copy,
-        764             typ=manager,
-        765         )
-        767 # For data is list-like, or Iterable (will consume into list)
-        768 elif is_list_like(data):
-
-
-    File D:\Software\Python3.9\lib\site-packages\pandas\core\internals\construction.py:337, in ndarray_to_mgr(values, index, columns, dtype, copy, typ)
-        332 # _prep_ndarraylike ensures that values.ndim == 2 at this point
-        333 index, columns = _get_axes(
-        334     values.shape[0], values.shape[1], index=index, columns=columns
-        335 )
-    --> 337 _check_values_indices_shape_match(values, index, columns)
-        339 if typ == "array":
-        340     if issubclass(values.dtype.type, str):
-
-
-    File D:\Software\Python3.9\lib\site-packages\pandas\core\internals\construction.py:408, in _check_values_indices_shape_match(values, index, columns)
-        406 passed = values.shape
-        407 implied = (len(index), len(columns))
-    --> 408 raise ValueError(f"Shape of passed values is {passed}, indices imply {implied}")
-
-
-    ValueError: Shape of passed values is (214462, 4), indices imply (214462, 29)
+    三、通过数据对象之间的相似性来填补缺失值
 
 
 代码仓库地址：https://github.com/LiukaSawaY/DMW3
